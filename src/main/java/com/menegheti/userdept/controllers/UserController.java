@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.menegheti.userdept.entites.User;
 import com.menegheti.userdept.repositories.UserRepository;
+import com.menegheti.userdept.services.UserService;
 
 @RestController
 @RequestMapping(value = "/users")
@@ -22,6 +23,9 @@ public class UserController {
 	
 	@Autowired
 	private UserRepository repository;
+	
+	@Autowired
+	private UserService service;
 	
 	@GetMapping
 	public List<User> findAll(){
@@ -46,5 +50,13 @@ public class UserController {
 		repository.deleteById(id);
 		return ResponseEntity.noContent().build();
 	}
+	
+	//atualizar o User
+	@PutMapping(value= "/{id}")
+	public ResponseEntity<User> update(@PathVariable Long id, @RequestBody User obj){
+		obj = service.update(id, obj);
+		return ResponseEntity.ok().body(obj);
+	}
+	
 	
 }
